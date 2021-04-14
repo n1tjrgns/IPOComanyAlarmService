@@ -26,14 +26,10 @@ public class SlackService {
      */
 
     public void sendMessage(List<IPO> ipoList) {
-        System.out.println("ipoList = " + ipoList);
         String inputLine = null;
         String jsonValue = "";
         StringBuffer outResult = new StringBuffer();
-        System.out.println("ipoList.size() = " + ipoList.size());
         for (int i = ipoList.size()-1; i>=0; i--) {
-            System.out.println("이게왜 안돌아");
-            System.out.println("ipoList.get(i).getIpoName() = " + ipoList.get(i).getIpoName());
             //ipoList.get(i)
             jsonValue = "{\n" +
                     "  \"blocks\": [\n" +
@@ -49,7 +45,7 @@ public class SlackService {
                     "      \"block_id\": \"section567\",\n" +
                     "      \"text\": {\n" +
                     "        \"type\": \"mrkdwn\",\n" +
-                    "        \"text\": \"기업명 : " + ipoList.get(i).getIpoName() + "\\n 공모 일정: " + ipoList.get(i).getIpoSchedule() + "\\n 희망 공모가 : " + ipoList.get(i).getHopePublicPrice() + "\\n 주간사 : " + ipoList.get(i).getStockFirm() + "\\n\"\n" +
+                    "        \"text\": \"기업명 : " + "<"+ipoList.get(i).getAnalystLink()+"|"+ipoList.get(i).getIpoName()+">" + "\\n 공모 일정: " + ipoList.get(i).getIpoSchedule() + "\\n 희망 공모가 : " + ipoList.get(i).getHopePublicPrice() + "\\n 주간사 : " + ipoList.get(i).getStockFirm() + "\\n\"\n" +
                     "      },\n" +
                     "      \"accessory\": {\n" +
                     "        \"type\": \"image\",\n" +
@@ -61,9 +57,9 @@ public class SlackService {
                     "}";
 
 
-            System.out.println("jsonValue = " + jsonValue);
+            //System.out.println("jsonValue = " + jsonValue);
 
-            String slackUrl = "https://hooks.slack.com/services/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";
+            String slackUrl = "https://hooks.slack.com/services/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";
             try {
                 URL url = new URL(slackUrl);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();

@@ -17,6 +17,7 @@ public class IPO {
     private String hopePublicPrice; //희망 공모가
 
     private List<String> stockFirm; //주관사
+    private String analystLink;
 
     //청약이 끝난 뒤 알 수 있는 항목
     private String commitPublicPrice;

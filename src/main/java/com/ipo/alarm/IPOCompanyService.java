@@ -40,6 +40,12 @@ public class IPOCompanyService {
         for (Element selectElement : selectElements) {
             //각각의 필요한 데이터와 공모주는 현재날짜보다 큰 것들만 가져오기
             Elements tdElements = selectElement.select("td");
+            Element getA = selectElement.select("td > a").first();
+            String link = getA.attr("href");
+            String realLink = "http://www.38.co.kr"+link;
+            System.out.println("realLink = " + realLink);
+
+            System.out.println("tdElements = " + tdElements);
             String day = tdElements.get(1).text();
             String subDay = day.substring(0,10);
             //System.out.println("subDay = " + subDay);
@@ -57,7 +63,7 @@ public class IPOCompanyService {
                 //System.out.println("afterDate = " + afterDate);
                 //System.out.println("now = " + parseDate);
 
-                if (now.isEqual(parseDate)){
+                if (now.isBefore(parseDate)){
 
                     String title = tdElements.get(0).text();
                     //System.out.println("title = " + title);
@@ -84,6 +90,7 @@ public class IPOCompanyService {
                             .ipoSchedule(day)
                             .hopePublicPrice(hopePrice)
                             .stockFirm(tempStockCompany)
+                            .analystLink(realLink)
                             .build();
 
                     ipoList.add(ipo);
