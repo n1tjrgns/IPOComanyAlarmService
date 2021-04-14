@@ -57,7 +57,7 @@ public class IPOCompanyService {
                 //System.out.println("afterDate = " + afterDate);
                 //System.out.println("now = " + parseDate);
 
-                if (now.isBefore(parseDate)){
+                if (now.isEqual(parseDate)){
 
                     String title = tdElements.get(0).text();
                     //System.out.println("title = " + title);

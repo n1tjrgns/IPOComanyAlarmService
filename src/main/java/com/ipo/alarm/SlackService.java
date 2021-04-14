@@ -20,6 +20,9 @@ public class SlackService {
      * to-do
      * 1. 링크도 같이추가
      * 2. 공모주 건마다 연결맺지 말고 한 번에 다 뿌려주기
+     * - 슬랙 템플릿 제한
+     * - 그로인해 구조적으로 한 번에 다 뿌려줄 수 없다.
+     * - 공모주 신청 날짜 당일에만 데이터를 가공하도록 수정
      */
 
     public void sendMessage(List<IPO> ipoList) {
