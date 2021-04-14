@@ -5,6 +5,7 @@ import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.text.ParseException;
@@ -15,6 +16,7 @@ import java.util.Date;
 import java.util.List;
 
 @Slf4j
+@Service
 public class IPOCompanyService {
 
     //우선은 기능 구현부터 빠르게 진행
@@ -32,22 +34,22 @@ public class IPOCompanyService {
         //select를 이용하여 원하는 태그를 선택한다. select는 원하는 값을 가져오기 위한 중요한 기능이다.
         //                               ==>원하는 값들이 들어있는 덩어리를 가져온다
         Elements selectElements = doc.select("table[summary='공모주 청약일정'] tbody tr");
-        /**
-         * LocalDateTime d = LocalDateTime.parse("2016-10-31 23:59:59",
-         * DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
-         */
-        LocalDate now = LocalDate.now();
 
+        LocalDate now = LocalDate.now();
+        List<IPO> ipoList = new ArrayList<>();
         for (Element selectElement : selectElements) {
             //각각의 필요한 데이터와 공모주는 현재날짜보다 큰 것들만 가져오기
             Elements tdElements = selectElement.select("td");
-
             String day = tdElements.get(1).text();
             String subDay = day.substring(0,10);
             //System.out.println("subDay = " + subDay);
 
             SimpleDateFormat beforesimpleDateFormat = new SimpleDateFormat("yyyy.MM.dd");
             SimpleDateFormat aftersimpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+
+            //현재 desc되어 있음
+
+            IPO ipo = null;
             try {
                 Date formatDate = beforesimpleDateFormat.parse(subDay);
                 String afterDate = aftersimpleDateFormat.format(formatDate);
@@ -76,19 +78,26 @@ public class IPOCompanyService {
                     for (String company : stockCompany) {
                         tempStockCompany.add(company);
                     }
-                    IPO ipo = IPO.builder()
+
+                    ipo = IPO.builder()
                             .ipoName(title)
                             .ipoSchedule(day)
                             .hopePublicPrice(hopePrice)
                             .stockFirm(tempStockCompany)
                             .build();
 
-                    System.out.println("ipo = " + ipo.toString());
+                    ipoList.add(ipo);
+                }else{
+                    continue;
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
+            //System.out.println("ipo = " + ipo);
         }
+
+        SlackService slackService = new SlackService();
+        slackService.sendMessage(ipoList);
     }
+
 }
