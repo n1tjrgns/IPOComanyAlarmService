@@ -26,6 +26,11 @@ public class SlackService {
      */
 
     public void sendMessage(List<IPO> ipoList) {
+
+        if (ipoList.size() == 0){
+            log.info("오늘은 공모주 청약 일정이 없습니다.");
+            return;
+        }
         String inputLine = null;
         String jsonValue = "";
         StringBuffer outResult = new StringBuffer();
@@ -59,7 +64,7 @@ public class SlackService {
 
             //System.out.println("jsonValue = " + jsonValue);
 
-            String slackUrl = "https://hooks.slack.com/services/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";
+            String slackUrl = "";
             try {
                 URL url = new URL(slackUrl);
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();

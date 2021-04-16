@@ -19,9 +19,8 @@ import java.util.List;
 @Service
 public class IPOCompanyService {
 
-    //우선은 기능 구현부터 빠르게 진행
-    public static void main(String[] args) {
-
+    public void ipoAlarmService(){
+        //우선은 기능 구현부터 빠르게 진행
         String url = "http://www.38.co.kr/html/fund/?o=k";    //크롤링할 url지정
         Document doc = null;        //Document에는 페이지의 전체 소스가 저장된다
 
@@ -43,9 +42,9 @@ public class IPOCompanyService {
             Element getA = selectElement.select("td > a").first();
             String link = getA.attr("href");
             String realLink = "http://www.38.co.kr"+link;
-            System.out.println("realLink = " + realLink);
+            //System.out.println("realLink = " + realLink);
 
-            System.out.println("tdElements = " + tdElements);
+            //System.out.println("tdElements = " + tdElements);
             String day = tdElements.get(1).text();
             String subDay = day.substring(0,10);
             //System.out.println("subDay = " + subDay);
@@ -63,7 +62,7 @@ public class IPOCompanyService {
                 //System.out.println("afterDate = " + afterDate);
                 //System.out.println("now = " + parseDate);
 
-                if (now.isBefore(parseDate)){
+                if (now.isEqual(parseDate)){
 
                     String title = tdElements.get(0).text();
                     //System.out.println("title = " + title);
@@ -106,5 +105,7 @@ public class IPOCompanyService {
         SlackService slackService = new SlackService();
         slackService.sendMessage(ipoList);
     }
+
+
 
 }
